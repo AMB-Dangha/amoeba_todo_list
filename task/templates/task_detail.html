@@ -1,0 +1,9 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <h2>{{ object.title }}</h2>
+  <p>{{ object.memo }}</p>
+  <p>{{ object.user_id.email}}</p>
+  <a href="{% url 'task_edit' object.pk %}">Edit</a>
+  <a href="{% url 'task_delete' object.pk %}">Delete</a>
+{% endblock %}

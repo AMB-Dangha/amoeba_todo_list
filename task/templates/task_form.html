@@ -1,0 +1,23 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <div class="container">
+    <h2 class="my-3">{% if object.pk %}Edit{% else %}Create{% endif %} Task</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% for field in form %}
+          <div class="control-group {% if field.errors %}error{% endif %}">
+              <label class="control-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+              <div class="controls">
+                  {{ field }}
+                  {% for error in field.errors %}
+                      <span class="help-inline">{{ error }}</span>
+                  {% endfor %}
+              </div>
+          </div>
+      {% endfor %}
+      <button type="submit" value="submit" style="margin:auto;display:block" class="btn btn-primary mt-3">{% if form.pk %}Update{% else %}Create{% endif %} Task</button>
+      <br><br>
+    </form>
+  </div>
+{% endblock %}
