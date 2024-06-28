@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-5h(7tw1$0^szpsa5%8ygh9icb56wi9*r8-d1o1y0l1gixjy%g@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['todo.amoeba.site', '127.0.0.1', 'localhost']
 
 AUTH_USER_MODEL = 'user.user'
 # Application definition
