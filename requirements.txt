@@ -1,4 +1,4 @@
-Django
-mysqlclient
-python-decouple
-python-dotenv
+Django==5.0.6
+mysqlclient==2.2.4
+python-decouple==3.8
+python-dotenv==1.0.1

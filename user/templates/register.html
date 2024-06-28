@@ -1,0 +1,45 @@
+{% extends "base_generic.html" %}
+
+<style>
+  .container {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.submit-button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+</style>
+
+
+{% block content %}
+  <div class="container">
+    <h2 class="text-center">Register</h2>
+    <form method="post" class="form-container">
+      {% csrf_token %}
+      {{ register_form.as_p }}
+      <button type="submit" class="submit-button">Register</button>
+    </form>
+  </div>
+{% endblock %}
