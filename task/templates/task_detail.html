@@ -1,9 +1,18 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
-  <h2>{{ object.title }}</h2>
-  <p>{{ object.memo }}</p>
-  <p>{{ object.user_id.email}}</p>
-  <a href="{% url 'task_edit' object.pk %}">Edit</a>
-  <a href="{% url 'task_delete' object.pk %}">Delete</a>
+    <div>
+        <h2>Title: {{ object.title }}</h2>
+        <p>Work hours: {{ object.work_hour }}</p>
+        <p>Task memo: {{ object.memo }}</p>
+        <p>Posted by: {{ object.user_id.email }}</p>
+        <p>Posted time: {{ object.created_at }}</p>
+
+        {% if request.user == object.user_id %}
+            <div>
+                <a href="{% url 'task_edit' object.pk %}" class="btn btn-primary">Edit</a>
+                <a href="{% url 'task_delete' object.pk %}" class="btn btn-danger">Delete</a>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}
