@@ -32,6 +32,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['todo.amoeba.site', '127.0.0.1', 'localhost']
 
+CSRF_TRUSTED_ORIGINS = ['https://todo.amoeba.site']
+
 AUTH_USER_MODEL = 'user.user'
 # Application definition
 
