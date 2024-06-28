@@ -1,17 +1,21 @@
 {% extends 'base_generic.html' %}
+{% block title %}Todo List{% endblock %}
+
 
 {% block content %}
   <div class="container">
     <h2 class="my-3">Tasks</h2>
+
     <div class="card">
       <div class="card-body">
-        <ul class="list-group">
           {% for task in all_tasks %}
-            <li class="list-group-item">
+            <div class="card-body">
               <div class="d-flex justify-content-between align-items-center">
-                <a href="{% url 'task_detail' task.pk %}">{{ task.title }}</a>
-                {{ task.user_id.email }}
-                {{ task.created_at }}
+                <a href="{% url 'task_detail' task.pk %}">
+                   {% if task.user_id == request.user %} Me {% else %}{{ task.user_id.email }} {% endif %} - {{ task.created_at }}
+                </a>
+
+                {{ task.title }}
                 {% if task.user_id == request.user %}
                   <div>
                     <a href="{% url 'task_edit' task.pk %}" class="btn btn-primary btn-sm">Edit</a>
@@ -20,11 +24,11 @@
 
                 {% endif %}
               </div>
-            </li>
+            </div>
           {% empty %}
             <li class="list-group-item">No tasks yet.</li>
           {% endfor %}
-        </ul>
+          </div>
       </div>
     </div>
     <a href="{% url 'task_create' %}" class="btn btn-success mt-3">Create New Task</a>

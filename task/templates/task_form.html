@@ -16,7 +16,7 @@
               </div>
           </div>
       {% endfor %}
-      <button type="submit" value="submit" style="margin:auto;display:block" class="btn btn-primary mt-3">{% if form.pk %}Update{% else %}Create{% endif %} Task</button>
+      <button type="submit" value="submit" style="margin:auto;display:block" class="btn btn-primary mt-3">{% if object.pk %}Update{% else %}Create{% endif %} Task</button>
       <br><br>
     </form>
   </div>

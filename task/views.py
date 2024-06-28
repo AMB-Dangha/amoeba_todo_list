@@ -17,6 +17,7 @@ class TaskListView(LoginRequiredMixin, ListView):
         context['all_tasks'] = context.get('object_list')
         return context
 
+
 class TaskDetailView(LoginRequiredMixin, DetailView):
     model = Task
     template_name = 'task_detail.html'
