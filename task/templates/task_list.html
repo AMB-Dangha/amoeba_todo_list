@@ -1,36 +1,50 @@
 {% extends 'base_generic.html' %}
 {% block title %}Todo List{% endblock %}
 
+{% load tz %}
+{% load humanize %}
+{% load date_filters %}
 
 {% block content %}
   <div class="container">
-    <h2 class="my-3">Tasks</h2>
+    <h2 class="my-3" style="text-align:center">AMB Todo-list</h2>
+    {% for date, tasks in tasks_by_date.items %}
+    <h3>{{ date|pretty_date }}</h3>
 
-    <div class="card">
-      <div class="card-body">
-          {% for task in all_tasks %}
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center">
-                <a href="{% url 'task_detail' task.pk %}">
-                   {% if task.user_id == request.user %} Me {% else %}{{ task.user_id.email }} {% endif %} - {{ task.created_at }}
-                </a>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Author</th>
+          <th scope="col">Posted Time</th>
+          <th scope="col">Title</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for task in tasks %}
+          <tr>
+            <td>{% if task.user_id == request.user %} Me {% else %}{{ task.user_id.email }} {% endif %}</td>
+            <td>Posted {{ task.created_at|timesince }} ago</td>
+            <td>{{ task.title }}</td>
+            <td>
+              <a href="{% url 'task_detail' task.pk %}" class="btn btn-secondary btn-sm">View</a>
+              {% if task.user_id == request.user and date|pretty_date == 'Yesterday' %}
+                <a href="{% url 'task_edit' task.pk %}" class="btn btn-primary btn-sm">Edit</a>
+                <a href="{% url 'task_delete' task.pk %}" class="btn btn-danger btn-sm">Delete</a>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="4">No tasks yet.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% if date|pretty_date == 'Today' %}
+      <a href="{% url 'task_create' %}" class="btn btn-success mb-3">Create New Task</a>
+    {% endif %}
+    {% endfor %}
 
-                {{ task.title }}
-                {% if task.user_id == request.user %}
-                  <div>
-                    <a href="{% url 'task_edit' task.pk %}" class="btn btn-primary btn-sm">Edit</a>
-                    <a href="{% url 'task_delete' task.pk %}" class="btn btn-danger btn-sm">Delete</a>
-                  </div>
-
-                {% endif %}
-              </div>
-            </div>
-          {% empty %}
-            <li class="list-group-item">No tasks yet.</li>
-          {% endfor %}
-          </div>
-      </div>
-    </div>
-    <a href="{% url 'task_create' %}" class="btn btn-success mt-3">Create New Task</a>
   </div>
 {% endblock %}

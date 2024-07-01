@@ -1,12 +1,15 @@
 {% extends 'base_generic.html' %}
+{% load tz %}
+{% load humanize %}
 
+{% block title %}Task Detail{% endblock %}
 {% block content %}
     <div>
         <h2>Title: {{ object.title }}</h2>
         <p>Work hours: {{ object.work_hour }}</p>
         <p>Task memo: {{ object.memo }}</p>
         <p>Posted by: {{ object.user_id.email }}</p>
-        <p>Posted time: {{ object.created_at }}</p>
+        <p>Posted {{ object.created_at|timesince }} ago</p>
 
         {% if request.user == object.user_id %}
             <div>
