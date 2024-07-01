@@ -11,11 +11,11 @@
         <p>Posted by: {{ object.user_id.email }}</p>
         <p>Posted {{ object.created_at|timesince }} ago</p>
 
-        {% if request.user == object.user_id %}
-            <div>
-                <a href="{% url 'task_edit' object.pk %}" class="btn btn-primary">Edit</a>
-                <a href="{% url 'task_delete' object.pk %}" class="btn btn-danger">Delete</a>
-            </div>
-        {% endif %}
+<!--        {% if request.user == object.user_id %}-->
+<!--            <div>-->
+<!--                <a href="{% url 'task_edit' object.pk %}" class="btn btn-primary">Edit</a>-->
+<!--                <a href="{% url 'task_delete' object.pk %}" class="btn btn-danger">Delete</a>-->
+<!--            </div>-->
+<!--        {% endif %}-->
     </div>
 {% endblock %}

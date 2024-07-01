@@ -29,7 +29,10 @@
             <td>{{ task.title }}</td>
             <td>{{ task.status }}</td>
             <td>
-              <a href="{% url 'task_detail' task.pk %}" class="btn btn-secondary btn-sm">View</a>
+              <a href="#" class="btn btn-info btn-sm" data-toggle="modal" data-target="#taskModal"
+                 data-title="{{task.title}}" data-status="{{task.status}}" data-description="{{task.memo}}"
+                 data-created_at="{{task.created_at}}" data-work_hours="{{task.work_hour|floatformat:'0'}}">View
+              </a>
               {% if task.user_id == request.user and date|pretty_date == 'Yesterday' %}
                 <a href="{% url 'task_edit' task.pk %}" class="btn btn-primary btn-sm">Edit</a>
                 <a href="{% url 'task_delete' task.pk %}" class="btn btn-danger btn-sm">Delete</a>
@@ -43,9 +46,6 @@
         {% endfor %}
       </tbody>
     </table>
-    {% if date|pretty_date == 'Today' %}
-      <a href="{% url 'task_create' %}" class="btn btn-success mb-3">Create New Task</a>
-    {% endif %}
     {% endfor %}
 
   </div>

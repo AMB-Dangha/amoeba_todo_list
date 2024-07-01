@@ -8,77 +8,122 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{% url 'task_list' %}">Todo App</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <!-- Add more links as needed -->
-            </ul>
-        </div>
-        {% if request.user.is_authenticated %}
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                </li>
-            </ul>
-        {% else %}
-            {% if request.path != '/user/login/' %}
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">Login</a>
-                </li>
-            </ul>
-            {% endif %}
-        {% endif %}
-
-    </nav>
-
-    <!-- Main Content -->
-    <div class="container mt-5">
-        {% block content %}{% endblock %}
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{% url 'task_list' %}">Todo App</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <!-- Add more links as needed -->
+        </ul>
     </div>
+    {% if request.user.is_authenticated %}
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        </li>
+    </ul>
+    {% else %}
+    {% if request.path != '/user/login/' %}
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+        </li>
+    </ul>
+    {% endif %}
+    {% endif %}
 
-    <!-- Include Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</nav>
+
+<!-- Main Content -->
+<div class="container mt-5">
+    {% block content %}{% endblock %}
+</div>
+
+<!-- Task Detail Modal -->
+<div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="taskModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="taskModalLabel">Task Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Status: </strong><span id="taskStatus"></span></p>
+                <p><strong>Created at:</strong> <span id="taskCreatedAt"></span></p>
+                <p><strong>Work hours:</strong> <span id="taskWorkHours"></span></p>
+                <strong>Memo:</strong> <p id="taskDescription"></p>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    // Auto-hide alerts after 10 seconds
-    setTimeout(function () {
-      const alerts = document.querySelectorAll('.alert');
-      alerts.forEach(function (alert) {
-        if (!alert.classList.contains('show')) return;
-        alert.classList.remove('show');
-        alert.classList.add('fade');
-        setTimeout(() => {
-          alert.style.display = 'none';
-        }, 150);
-      });
-    }, 10000);
+    document.addEventListener('DOMContentLoaded', function () {
+      // Auto-hide alerts after 10 seconds
+      setTimeout(function () {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function (alert) {
+          if (!alert.classList.contains('show')) return;
+          alert.classList.remove('show');
+          alert.classList.add('fade');
+          setTimeout(() => {
+            alert.style.display = 'none';
+          }, 150);
+        });
+      }, 10000);
 
-    // Ensure close button works
-    const closeButtons = document.querySelectorAll('.alert .close');
-    closeButtons.forEach(function (button) {
-      button.addEventListener('click', function () {
-        const alert = button.closest('.alert');
-        alert.classList.remove('show');
-        alert.classList.add('fade');
-        setTimeout(() => {
-          alert.style.display = 'none';
-        }, 150);
+      // Ensure close button works
+      const closeButtons = document.querySelectorAll('.alert .close');
+      closeButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          const alert = button.closest('.alert');
+          alert.classList.remove('show');
+          alert.classList.add('fade');
+          setTimeout(() => {
+            alert.style.display = 'none';
+          }, 150);
+        });
       });
     });
-  });
+
+    $('#taskModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget); // Button that triggered the modal
+      var title = button.data('title');
+      var description = button.data('description');
+      var createdAt = button.data('created_at');
+      var status = button.data('status');
+      var workHours = button.data('work_hours');
+
+      var modal = $(this);
+      modal.find('.modal-title').text('Task title: ' + title);
+      modal.find('#taskTitle').text(title);
+      modal.find('#taskDescription').text(description);
+      modal.find('#taskCreatedAt').text(createdAt);
+      modal.find('#taskStatus').text(status);
+      modal.find('#taskWorkHours').text(workHours);
+    });
 </script>
 </body>
 </html>

@@ -58,7 +58,10 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task
     form_class = TaskForm
     template_name = 'task_form.html'
-    success_url = reverse_lazy('task_list')
+    success_url = reverse_lazy('task_list_user')
+
+    def get_success_url(self):
+        return reverse_lazy('task_list_user', kwargs={'user_id': self.request.user.id})
 
     def form_valid(self, form):
         form.instance.user_id = self.request.user
@@ -69,7 +72,10 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
     model = Task
     form_class = TaskForm
     template_name = 'task_form.html'
-    success_url = reverse_lazy('task_list')
+    success_url = reverse_lazy('task_list_user')
+
+    def get_success_url(self):
+        return reverse_lazy('task_list_user', kwargs={'user_id': self.request.user.id})
 
     def form_valid(self, form):
         form.instance.user_id = self.request.user
@@ -79,4 +85,7 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
 class TaskDeleteView(LoginRequiredMixin, DeleteView):
     model = Task
     template_name = 'task_confirm_delete.html'
-    success_url = reverse_lazy('task_list')
+    success_url = reverse_lazy('task_list_user')
+
+    def get_success_url(self):
+        return reverse_lazy('task_list_user', kwargs={'user_id': self.request.user.id})
