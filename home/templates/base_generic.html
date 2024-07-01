@@ -53,7 +53,7 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    // Auto-hide alerts after 2 seconds
+    // Auto-hide alerts after 10 seconds
     setTimeout(function () {
       const alerts = document.querySelectorAll('.alert');
       alerts.forEach(function (alert) {
@@ -64,12 +64,10 @@
           alert.style.display = 'none';
         }, 150);
       });
-    }, 2000);
+    }, 10000);
 
     // Ensure close button works
     const closeButtons = document.querySelectorAll('.alert .close');
-    console.log(closeButtons);
-    console.log(123);
     closeButtons.forEach(function (button) {
       button.addEventListener('click', function () {
         const alert = button.closest('.alert');

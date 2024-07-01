@@ -23,9 +23,12 @@
                 </div>
             </form>
             {% if error %}
-                <div class="alert alert-danger mt-3">
-                    <p>{{ error }}</p>
-                </div>
+             <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ error }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
             {% endif %}
             <div class="form-group text-right mt-6">
                 <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
