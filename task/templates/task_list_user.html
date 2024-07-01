@@ -7,14 +7,13 @@
 
 {% block content %}
   <div class="container">
-    <h2 class="my-3" style="text-align:center">AMB todo-list</h2>
+    <h2 class="my-3" style="text-align:center">{% if request.user == user %}My {% else %}{{ user }} {% endif %} todo-list</h2>
     {% for date, tasks in tasks_by_date.items %}
     <h3>{{ date|pretty_date }}</h3>
 
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">Author</th>
           <th scope="col">Posted Time</th>
           <th scope="col">Title</th>
           <th scope="col">Status</th>
@@ -24,7 +23,6 @@
       <tbody>
         {% for task in tasks %}
           <tr>
-            <td><a href="{% url 'task_list_user' task.user_id.id %}">{% if task.user_id == request.user %} Me {% else %}{{ task.user_id.email }} {% endif %}</a></td>
             <td>Posted {{ task.created_at|timesince }} ago</td>
             <td>{{ task.title }}</td>
             <td>{{ task.status }}</td>

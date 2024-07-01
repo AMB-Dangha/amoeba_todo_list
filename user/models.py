@@ -34,7 +34,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-
     related_name = 'user'
 
     def __str__(self):
