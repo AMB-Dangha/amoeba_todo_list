@@ -21,19 +21,21 @@ def login_view(request):
 
 
 def register_view(request):
+    form = NewUserForm()
+    context = {}
+
     if request.method == "POST":
         form = NewUserForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
-            messages.success(request, "Registration successful.")
-            return redirect("login")
-        messages.error(request, "Unsuccessful registration. Invalid information.")
+            form.save()
+            context['success_message'] = "Registration successful."
+
     else:
         if request.user.is_authenticated:
             return redirect('task_list')
-        form = NewUserForm()
-        return render(request=request, template_name="register.html", context={"register_form": form})
+
+    context["register_form"] = form
+    return render(request=request, template_name="register.html", context=context)
 
 
 def logout_view(request):
