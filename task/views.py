@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models.functions import TruncDate
+from django.db.models import DateField
+from django.db.models.functions import Cast
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from user.models import User
@@ -20,9 +21,13 @@ class TaskListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        dates = Task.objects.annotate(date=TruncDate('created_at')).values('date').distinct()
+        dates = Task.objects.annotate(
+            date=Cast('created_at', DateField())
+        ).values_list('date', flat=True).distinct().order_by('-date')
+
         context['tasks_by_date'] = {timezone.localdate().today() - timezone.timedelta(days=i): None for i in range(2)}
-        tasks_by_date = {date['date']: Task.objects.filter(created_at__date=date['date']) for date in dates}
+        tasks_by_date = {date: Task.objects.filter(created_at__contains=date) for date in dates}
+
         context['tasks_by_date'].update(tasks_by_date)
 
         return context
@@ -31,7 +36,7 @@ class TaskListView(LoginRequiredMixin, ListView):
 class TaskListUserView(LoginRequiredMixin, ListView):
     model = Task
     template_name = 'task_list_user.html'
-    
+
     def get_queryset(self):
         user_id = self.kwargs['user_id']
         return Task.objects.filter(user_id=user_id).annotate(
@@ -40,10 +45,13 @@ class TaskListUserView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         user_id = self.kwargs['user_id']
         context = super().get_context_data(**kwargs)
-        dates = Task.objects.filter(user_id=user_id).annotate(date=TruncDate('created_at')).values('date').distinct()
+
+        dates = Task.objects.filter(user_id=user_id).annotate(
+            date=Cast('created_at', DateField())
+        ).values_list('date', flat=True).distinct().order_by('-date')
+
         context['tasks_by_date'] = {timezone.localdate().today() - timezone.timedelta(days=i): None for i in range(2)}
-        tasks_by_date = {date['date']: Task.objects.filter(
-            user_id=user_id, created_at__date=date['date']) for date in dates}
+        tasks_by_date = {date: Task.objects.filter(user_id=user_id, created_at__contains=date) for date in dates}
         context['tasks_by_date'].update(tasks_by_date)
         context['user'] = User.objects.get(id=user_id)
         return context
