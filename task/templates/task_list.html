@@ -24,7 +24,7 @@
       <tbody>
         {% for task in tasks %}
           <tr>
-            <td><a href="{% url 'task_list_user' task.user_id.id %}">{% if task.user_id == request.user %} Me {% else %}{{ task.user_id.email }} {% endif %}</a></td>
+            <td><a href="{% url 'task_list_user' task.user_id.id %}">{% if task.user_id == request.user %} Me {% else %}{{ task.user_id.name }} {% endif %}</a></td>
             <td>Posted {{ task.created_at|timesince }} ago</td>
             <td>{{ task.title }}</td>
             <td>{{ task.status }}</td>

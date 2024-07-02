@@ -24,6 +24,7 @@ class LoginForm(AuthenticationForm):
 
 class NewUserForm(UserCreationForm):
     email = forms.EmailField(label='Email')
+    name = forms.CharField(label='Name')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -35,10 +36,11 @@ class NewUserForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ("email", "password1", "password2")
+        fields = ("email", "name", "password1", "password2")
 
     def save(self, commit=True):
         user = super(NewUserForm, self).save(commit=False)
+        user.name = self.cleaned_data['name']
         user.email = self.cleaned_data['email']
         if commit:
             user.save()

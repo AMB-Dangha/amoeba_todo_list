@@ -7,7 +7,7 @@
 
 {% block content %}
   <div class="container">
-    <h2 class="my-3" style="text-align:center">{% if request.user == user %}My {% else %}{{ user }} {% endif %} todo-list</h2>
+    <h2 class="my-3" style="text-align:center">{% if request.user == user %}My {% else %}{{ user.name }} {% endif %} todo-list</h2>
     {% for date, tasks in tasks_by_date.items %}
     <h3>{{ date|pretty_date }}</h3>
 

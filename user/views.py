@@ -32,7 +32,7 @@ def register_view(request):
         form = NewUserForm(request.POST)
         if form.is_valid():
             form.save()
-            context['success_message'] = "Registration successful."
+            context['success_message'] = "Registration successful. Please log in."
 
     else:
         if request.user.is_authenticated:
