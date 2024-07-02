@@ -14,11 +14,11 @@
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">Author</th>
-          <th scope="col">Posted Time</th>
-          <th scope="col">Title</th>
-          <th scope="col">Status</th>
-          <th scope="col">Actions</th>
+          <th width="15%" scope="col">Author</th>
+          <th width="25%" scope="col">Posted Time</th>
+          <th width="40%" scope="col">Title</th>
+          <th width="10%" scope="col">Status</th>
+          <th width="10%" scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -33,10 +33,6 @@
                  data-title="{{task.title}}" data-status="{{task.status}}" data-description="{{task.memo}}"
                  data-created_at="{{task.created_at}}" data-work_hours="{{task.work_hour|floatformat:'0'}}">View
               </a>
-              {% if task.user_id == request.user and date|pretty_date == 'Yesterday' %}
-                <a href="{% url 'task_edit' task.pk %}" class="btn btn-primary btn-sm">Edit</a>
-                <a href="{% url 'task_delete' task.pk %}" class="btn btn-danger btn-sm">Delete</a>
-              {% endif %}
             </td>
           </tr>
         {% empty %}
